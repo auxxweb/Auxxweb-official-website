@@ -1,9 +1,9 @@
 /********** Template CSS **********/
 :root {
-    --primary: #4294E3;
-    --secondary: #3ca33a;
+    --primary: #0b797d;
+    --secondary: #008D92;
     --light: #F0F6FF;
-    --dark: #262B47;
+    --dark: #074042;
 }
 
 
@@ -448,6 +448,7 @@ h6,
         right 0px top 50%,
         center top;
     background-repeat: no-repeat;
+    background-size: contain;
 }
 
 .footer .btn.btn-social {
