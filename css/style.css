@@ -324,6 +324,7 @@ h6,
     height: 300px; 
     padding: 15px;
     margin-right: 30px;
+    width: 94%!important;
 }
 
 .screenshot-carousel .laptop-screen {
