@@ -55,11 +55,11 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav mx-auto py-0">
-                    <a href="index.html" class="nav-item nav-link active">Home</a>
+                    <a href="index.html" class="nav-item nav-link">Home</a>
                     <a href="index.html" class="nav-item nav-link">About</a>
                     <a href="index.html" class="nav-item nav-link">Feature</a>
                     <a href="index.html" class="nav-item nav-link">Team</a>
-                    <a href="blo.html" class="nav-item nav-link">Blog</a>
+                    <a href="blog.html" class="nav-item nav-link active">Blog</a>
                     <a href="index.html" class="nav-item nav-link">Contact</a>
 
                 </div>
@@ -245,6 +245,8 @@
                 return [];
             }
         }
+        // Start fetching data as soon as the script is loaded
+        fetchSheetData();
     
         document.addEventListener('DOMContentLoaded', async function () {
             const blogContainer = document.querySelector('#blog-cards .row.g-4');
@@ -255,12 +257,25 @@
     
           
             function generateBlogCard(post) {
+                // Convert the date string into a Date object
+                const date = new Date(post.date);
+
+            // Format the date as desired
+                const formattedDate = date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+            });
+
+                // Construct the iframe src URL with the image
+                const iframeSrc = `image.html?src=${encodeURIComponent(post.image)}`;
+
                 return `
                     <div class="col-lg-4 col-md-6">
                         <div class="bg-light rounded blog-post">
                             <div class="position-relative">
-                                <img class="img-fluid blog-image" src="${post.image}" alt="Blog Post Image">
-                                <div class="position-absolute top-0 start-0 bg-primary-gradient text-white rounded-end py-2 px-4">${post.date}</div>
+                                <img class="img-fluid blog-image" src="${iframeSrc}" alt="Blog Post Image">
+                                <div class="position-absolute top-0 start-0 bg-primary-gradient text-white rounded-end py-2 px-4">${formattedDate}</div>
                             </div>
                             <div class="p-4 d-flex flex-column">
                                 <h4 class="mb-3">${post.title}</h4>
