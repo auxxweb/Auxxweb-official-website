@@ -91,8 +91,10 @@
     </div>
     <!-- Navbar & Hero End -->
 
-
-
+        <div id="loader" class="loader-screen">
+            <div class="spinner"></div>
+        </div>
+    
         <div class="container-xxl py-5" id="blog-cards">
             <div class="container py-5 px-lg-5">
                 <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
@@ -104,8 +106,7 @@
             </div>
         </div>
         
-
-
+        
         <!-- Footer Start -->
         <div class="container-fluid bg-primary text-light footer wow fadeIn" data-wow-delay="0.1s">
             <div class="container py-5 px-lg-5">
@@ -249,43 +250,37 @@
         fetchSheetData();
     
         document.addEventListener('DOMContentLoaded', async function () {
+            const loader = document.getElementById('loader');
             const blogContainer = document.querySelector('#blog-cards .row.g-4');
-    
+
+            // Show loader initially
+            loader.style.display = 'flex';
        
             const fetchedPosts = await fetchSheetData();
             const postsToDisplay = blogPosts.concat(fetchedPosts);
     
           
             function generateBlogCard(post) {
-                // Convert the date string into a Date object
                 const date = new Date(post.date);
-
-            // Format the date as desired
                 const formattedDate = date.toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric',
-            });
+                });
 
                 // Construct the iframe src URL with the image
                 const iframeSrc = `image.html?src=${encodeURIComponent(post.image)}`;
 
                 return `
-                    <div class="col-lg-4 col-md-6">
-                        <div class="bg-light rounded blog-post">
-                            <div class="position-relative">
-                                <img class="img-fluid blog-image" src="${iframeSrc}" alt="Blog Post Image">
-                                <div class="position-absolute top-0 start-0 bg-primary-gradient text-white rounded-end py-2 px-4">${formattedDate}</div>
-                            </div>
-                            <div class="p-4 d-flex flex-column">
-                                <h4 class="mb-3">${post.title}</h4>
-                                <p class="short-content">${post.shortContent}</p>
-                                <p class="long-content d-none">${post.longContent}</p>
-                                <a href="#" class="text-primary-gradient fw-medium read-more">Read More <i class="fa fa-arrow-right ms-2"></i></a>
-                                <a href="#" class="text-primary-gradient fw-medium read-less d-none">Read Less <i class="fa fa-arrow-left ms-2"></i></a>
-                            </div>
-                        </div>
-                    </div>
+                    <section class="blog-card">
+                        <h3>${post.title}</h3>
+                     
+                        <p class="date">${formattedDate}</p>
+                        <p class="short-content">${post.shortContent}</p>
+                        <p class="long-content">${post.longContent}</p>
+                        <a class="read-more">Read More</a>
+                        <a class="read-less">Read Less</a>
+                    </section>
                 `;
             }
     
@@ -293,30 +288,30 @@
             postsToDisplay.forEach((post) => {
                 blogContainer.innerHTML += generateBlogCard(post);
             });
+                    // Hide the loader after loading is complete
+            loader.style.display = 'none';
 
+            // Event listeners for read more and read less
             document.querySelectorAll('.read-more').forEach((button) => {
-                button.addEventListener('click', function (event) {
-                    event.preventDefault();
-                    const card = this.closest('.blog-post');
-                    card.querySelector('.short-content').classList.add('d-none');
-                    card.querySelector('.long-content').classList.remove('d-none');
-                    this.classList.add('d-none');
-                    card.querySelector('.read-less').classList.remove('d-none');
+                button.addEventListener('click', function () {
+                    const card = this.closest('.blog-card');
+                    card.querySelector('.long-content').style.display = 'block';
+                    this.style.display = 'none';
+                    card.querySelector('.read-less').style.display = 'inline-block';
                 });
             });
-    
+
             document.querySelectorAll('.read-less').forEach((button) => {
-                button.addEventListener('click', function (event) {
-                    event.preventDefault();
-                    const card = this.closest('.blog-post');
-                    card.querySelector('.short-content').classList.remove('d-none');
-                    card.querySelector('.long-content').classList.add('d-none');
-                    this.classList.add('d-none');
-                    card.querySelector('.read-more').classList.remove('d-none');
+                button.addEventListener('click', function () {
+                    const card = this.closest('.blog-card');
+                    card.querySelector('.long-content').style.display = 'none';
+                    this.style.display = 'none';
+                    card.querySelector('.read-more').style.display = 'inline-block';
                 });
             });
         });
     </script>
+    
     
 
 </body>
